@@ -32,3 +32,7 @@ set-default-source 0
 
 sudo apt-get install gnome-control-center
 https://askubuntu.com/questions/78174/play-sound-through-two-or-more-outputs-devices
+
+
+https://askubuntu.com/questions/78174/play-sound-through-two-or-more-outputs-devices
+https://forums.linuxmint.com/viewtopic.php?t=264540#p1436479
