@@ -5,6 +5,7 @@ import epd5in83b
 import time
 from PIL import Image,ImageDraw,ImageFont
 import traceback
+from random import randrange
 
 #******************************************************************************
 #
@@ -106,20 +107,27 @@ def musicDisplay(artist = "Ghost", title = "Rats", album = "Prequelle", timeAudi
         line4 = line3 + offsetLine
         line5 = line4 + offsetLine
         
-        drawblack.line((line0+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20-20,
-            line0+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20), fill = 1, width=6)
+        randIndex = randrange(0,5)
+        
+        logoLines = [drawblack]*5
+        logoLinesFill = [1]*5
+        logoLines[randIndex] = drawred
+        logoLinesFill[randIndex] = 0
+        
+        logoLines[0].line((line0+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20-20,
+            line0+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20), fill = logoLinesFill[0], width=6)
             
-        drawred.line((line1+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20-30,
-            line1+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20), fill = 0, width=6)
+        logoLines[1].line((line1+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20-30,
+            line1+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20), fill = logoLinesFill[1], width=6)
             
-        drawblack.line((line2+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20-15,
-            line2+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20), fill = 1, width=6)
+        logoLines[2].line((line2+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20-15,
+            line2+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20), fill = logoLinesFill[2], width=6)
             
-        drawblack.line((line3+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20-25,
-            line3+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20), fill = 1, width=6)
+        logoLines[3].line((line3+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20-25,
+            line3+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20), fill = logoLinesFill[3], width=6)
             
-        drawblack.line((line4+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20-20,
-            line4+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20), fill = 1, width=6)
+        logoLines[4].line((line4+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20-20,
+            line4+epd5in83b.EPD_WIDTH/2-ellipseRadius,epd5in83b.EPD_HEIGHT-10-20), fill = logoLinesFill[4], width=6)
             
             
         drawred.line((15,epd5in83b.EPD_HEIGHT-20,
