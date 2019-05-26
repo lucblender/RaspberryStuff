@@ -18,10 +18,14 @@ import traceback
 # @return void
 # 
 #******************************************************************************
-def musicDisplay(artist = "Ghost", title = "Rats", album = "Prequelle", timeAudio = "4:22", albumBlack = 'albumOutBlack.bmp', albumRed = 'albumOutRed.bmp'):
+def musicDisplay(artist = "Ghost", title = "Rats", album = "Prequelle", timeAudio = "4:22", albumBlack = 'albumOutBlack.bmp', albumRed = 'albumOutRed.bmp', spotifyConnect = True):
 
     if len(artist) > 15:
-        artist = artist[:15]+"..."
+        artist = artist[:15]+"..."    
+    if len(title) > 15:
+        title = title[:15]+"..."    
+    if len(album) > 15:
+        album = album[:15]+"..."
 
     originAlbumX = 15
     originAlbumy = 15
@@ -31,8 +35,8 @@ def musicDisplay(artist = "Ghost", title = "Rats", album = "Prequelle", timeAudi
     try:
         epd = epd5in83b.EPD()
         epd.init()
-        print("Clear...")
-        epd.Clear(0xFF)
+        #print("Clear...")
+        #epd.Clear(0xFF)
         
         # Drawing on the Horizontal image
         HBlackimage = Image.new('1', (epd5in83b.EPD_WIDTH, epd5in83b.EPD_HEIGHT), 255)  # 600*448
@@ -42,27 +46,34 @@ def musicDisplay(artist = "Ghost", title = "Rats", album = "Prequelle", timeAudi
         print("Drawing")
         drawblack = ImageDraw.Draw(HBlackimage)
         drawred = ImageDraw.Draw(HRedimage)
-        albumOutBlack = Image.open(albumBlack)
-        albumOutRed = Image.open(albumRed)    
+        albumOutBlack = Image.open(albumBlack)      
+        albumOutRed = Image.open(albumRed)      
         blackimage1 = Image.new('1', (epd5in83b.EPD_WIDTH, epd5in83b.EPD_HEIGHT), 255)
         redimage1 = Image.new('1', (epd5in83b.EPD_WIDTH, epd5in83b.EPD_HEIGHT), 255)
         blackimage1.paste(albumOutBlack, (originAlbumX,originAlbumy))    
         redimage1.paste(albumOutRed, (originAlbumX,originAlbumy))  
-
+        if(spotifyConnect == True):
+            spotifyImage = Image.open("spotify.bmp")
+            redimage1.paste(spotifyImage,(500,10))
+            
         drawblack = ImageDraw.Draw(blackimage1)
         drawred = ImageDraw.Draw(redimage1)
         
-        font25Medium = ImageFont.truetype('/home/pi/e-Paper/5.83inch_e-paper_b&c_code/RaspberryPi/python3/Noir/NoirStd-Medium.ttf', 25)
-        font25Regular = ImageFont.truetype('/home/pi/e-Paper/5.83inch_e-paper_b&c_code/RaspberryPi/python3/Noir/NoirStd-Regular.ttf', 25)
+        font25Medium = ImageFont.truetype('/root/mopidyapi/Noir/NoirStd-Medium.ttf', 25)
+        font25Regular = ImageFont.truetype('/root/mopidyapi/Noir/NoirStd-Regular.ttf', 25)
         
-        font15Medium = ImageFont.truetype('/home/pi/e-Paper/5.83inch_e-paper_b&c_code/RaspberryPi/python3/Noir/NoirStd-Medium.ttf', 19)
-        font15Regular = ImageFont.truetype('/home/pi/e-Paper/5.83inch_e-paper_b&c_code/RaspberryPi/python3/Noir/NoirStd-Regular.ttf', 19)
+        font15Medium = ImageFont.truetype('/root/mopidyapi/Noir/NoirStd-Medium.ttf', 19)
+        font15Regular = ImageFont.truetype('/root/mopidyapi/Noir/NoirStd-Regular.ttf', 19)
         drawblack.text((375, 50), artist, font = font25Medium, fill = 0)
         drawred.text((375, 85), "Title", font = font15Regular, fill = 0)
         drawblack.text((375, 110), title, font = font25Regular, fill = 0)
         drawred.text((375+27, 150), "Album", font = font15Regular, fill = 0)
         drawblack.text((375, 175), album, font = font25Regular, fill = 0)
-        drawred.text((375, 215), timeAudio, font = font15Regular, fill = 0)
+        drawred.text((375, 215), timeAudio, font = font15Regular, fill = 0) 
+        
+        if(spotifyConnect == True):
+            drawblack.text((530, 27), "Connect", font = font15Regular, fill = 0)
+            drawred.text((530, 27), "Connect", font = font15Regular, fill = 1)
         
         heightVinyl = 143
         drawblack.ellipse((375,heightVinyl,375+25,heightVinyl+25),fill = 0)

@@ -45,14 +45,12 @@ def divideFromSource(inputFile = "album.jpg", outputRedFile = "albumOutRed.bmp",
     less_colors = centers[labels].reshape(original.shape).astype('uint8')
 
     # get rgb value of 3 colors --> sadly its sorded so get also index to sort it after
-    unique, index = np.unique(less_colors, return_index=True)
-
-    unique = less_colors.flat[np.sort(index)]
+    unique = np.unique(less_colors.reshape(-1,3),axis=0)
 
     # get every color individually
-    unique0 = unique[0:3]
-    unique1 = unique[3:6]
-    unique2 = unique[6:9]
+    unique0 = unique[0]
+    unique1 = unique[1]
+    unique2 = unique[2]
 
     #get the mean of every color
     mean0 = unique0.mean()
