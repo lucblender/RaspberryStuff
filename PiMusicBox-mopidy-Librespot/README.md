@@ -22,7 +22,8 @@ To note, it use is compatible with python 3.6 and higher. To install python 3.6 
 http://www.knight-of-pi.org/installing-python3-6-on-a-raspberry-pi/
 
 
-## Update for spotify connect (Librespot)
+## Update for spotify connect 
+### For mopidy(Librespot)
 If for some reason the spotify connect on PiMusicBox doesn't work, you can update librespot with the following commands:
 
 ```
@@ -33,6 +34,16 @@ unzip librespot-linux-armhf-raspberry_pi.zip
 rm librespot-linux-armhf-raspberry_pi.zip
 service librespot start
 ```
+### Disabled in mopidy and build latest version
+
+```
+sudo apt-get install build-essential libasound2-dev         //needed to build libresport
+curl https://sh.rustup.rs -sSf | sh                         // install rust and so cargo (also needed for build)
+git clone https://github.com/librespot-org/librespot.git
+cd librespot
+cargo build --release                                       //actual build
+```
+
 ### Lauch Librespot with logs file
 ```
 ./librespot -b 320 -v -c /tmp --name 'RaspberryPi MusicBox' >/root/mopidyapi/data/librespotOutput 2>&1

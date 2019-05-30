@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 
 import epd5in83b
+import epd2in7b
 import time
 from PIL import Image,ImageDraw,ImageFont
 import traceback
@@ -38,17 +39,10 @@ def musicDisplay(artist = "Ghost", title = "Rats", album = "Prequelle", timeAudi
         epd.init()
         #print("Clear...")
         #epd.Clear(0xFF)
-        
-        # Drawing on the Horizontal image
-        HBlackimage = Image.new('1', (epd5in83b.EPD_WIDTH, epd5in83b.EPD_HEIGHT), 255)  # 600*448
-        HRedimage = Image.new('1', (epd5in83b.EPD_WIDTH, epd5in83b.EPD_HEIGHT), 255)  # 600*448 
-        
-        # Horizontal
+       
         print("Drawing")
-        drawblack = ImageDraw.Draw(HBlackimage)
-        drawred = ImageDraw.Draw(HRedimage)
         albumOutBlack = Image.open(albumBlack)      
-        albumOutRed = Image.open(albumRed)      
+        albumOutRed = Image.open(albumRed) 
         blackimage1 = Image.new('1', (epd5in83b.EPD_WIDTH, epd5in83b.EPD_HEIGHT), 255)
         redimage1 = Image.new('1', (epd5in83b.EPD_WIDTH, epd5in83b.EPD_HEIGHT), 255)
         blackimage1.paste(albumOutBlack, (originAlbumX,originAlbumy))    
@@ -149,6 +143,165 @@ def musicDisplay(artist = "Ghost", title = "Rats", album = "Prequelle", timeAudi
             epd5in83b.EPD_WIDTH/2-35,epd5in83b.EPD_HEIGHT-60), fill = 0, width=4)        
         drawblack.line((epd5in83b.EPD_WIDTH-15,epd5in83b.EPD_HEIGHT-60,
             epd5in83b.EPD_WIDTH/2+35,epd5in83b.EPD_HEIGHT-60), fill = 0, width=4)
+            
+            
+        epd.display(epd.getbuffer(blackimage1), epd.getbuffer(redimage1))
+        time.sleep(2)
+       
+    except:
+        print('traceback.format_exc():\n%s',traceback.format_exc())
+
+        
+def musicDisplaySmall(artist = "Ghost", title = "Rats", album = "Prequelle", timeAudio = "4:22", albumBlack = 'albumOutBlack.bmp', albumRed = 'albumOutRed.bmp', spotifyConnect = True):
+
+    if len(artist) > 8:
+        artist = artist[:8]+"..."    
+    if len(title) > 9:
+        title = title[:9]+"..."    
+    if len(album) > 9:
+        album = album[:9]+"..."
+
+    originAlbumX = 30
+    originAlbumy = 7
+    albumLineOffset = 3
+    albumSize = 130
+
+    try:
+        epd = epd2in7b.EPD()
+        epd.init()          
+        # Horizontal
+        print("Drawing")
+        albumOutBlack = Image.open(albumBlack).resize((albumSize,albumSize))  
+        albumOutRed = Image.open(albumRed).resize((albumSize,albumSize))
+        blackimage1 = Image.new('1', (epd2in7b.EPD_HEIGHT,epd2in7b.EPD_WIDTH), 255)# 264*176
+        redimage1 = Image.new('1', (epd2in7b.EPD_HEIGHT,epd2in7b.EPD_WIDTH), 255)# 264*176
+        blackimage1.paste(albumOutBlack, (originAlbumX,originAlbumy))    
+        redimage1.paste(albumOutRed, (originAlbumX,originAlbumy))  
+        if(spotifyConnect == True):
+            spotifyImage = Image.open("spotify.bmp").resize((30,30))
+            redimage1.paste(spotifyImage,(225,142))
+            
+        drawblack = ImageDraw.Draw(blackimage1)
+        drawred = ImageDraw.Draw(redimage1)
+        
+        font25Medium = ImageFont.truetype('/root/mopidyapi/Noir/NoirStd-Medium.ttf', 19)
+        font25Regular = ImageFont.truetype('/root/mopidyapi/Noir/NoirStd-Regular.ttf', 16)
+        
+        font15Medium = ImageFont.truetype('/root/mopidyapi/Noir/NoirStd-Medium.ttf', 15)
+        font15Regular = ImageFont.truetype('/root/mopidyapi/Noir/NoirStd-Regular.ttf', 15)
+        textX = 170
+        drawblack.text((textX, 35), artist, font = font25Medium, fill = 0)
+        drawred.text((textX, 60), "Title", font = font15Medium, fill = 0)
+        drawblack.text((textX, 75), title, font = font25Regular, fill = 0)
+        drawred.text((textX, 96), "Album", font = font15Medium, fill = 0)
+        drawblack.text((textX, 110), album, font = font25Regular, fill = 0)
+        drawred.text((textX, 125), timeAudio, font = font15Medium, fill = 0) 
+        
+        if(spotifyConnect == True):
+            drawblack.text((225-40, 142+20), "Connect", font = font15Medium, fill = 0)
+            drawred.text((225-40, 142+20), "Connect", font = font15Medium, fill = 1)
+
+        drawred.line((originAlbumX-albumLineOffset, originAlbumy-albumLineOffset,
+            originAlbumX-albumLineOffset, originAlbumy+albumLineOffset+albumSize), fill = 0, width=2)
+            
+        drawred.line((originAlbumX-albumLineOffset, originAlbumy-albumLineOffset,
+            originAlbumX+albumLineOffset+albumSize, originAlbumy-albumLineOffset), fill = 0, width=2)
+            
+        drawblack.line((originAlbumX+albumLineOffset+albumSize, originAlbumy+albumLineOffset+albumSize,
+            originAlbumX-albumLineOffset, originAlbumy+albumLineOffset+albumSize), fill = 0, width=2)
+            
+        drawblack.line((originAlbumX+albumLineOffset+albumSize, originAlbumy+albumLineOffset+albumSize,
+            originAlbumX+albumLineOffset+albumSize, originAlbumy-albumLineOffset), fill = 0, width=2)
+            
+        button = 20
+        buttonX = 2
+        buttonY = 0
+        
+        drawred.polygon([(buttonX,buttonY), (buttonX, buttonY+button), (buttonX+button,buttonY+button/2)], fill = 0)
+        
+        if(spotifyConnect == False):
+            buttonY = 50
+            
+            drawred.rectangle([(buttonX,buttonY), (buttonX+7, buttonY+button)], fill = 0)        
+            drawred.rectangle([(buttonX+13,buttonY), (buttonX+button, buttonY+button)], fill = 0)
+            
+            buttonY = 100
+            
+            drawred.polygon([(buttonX,buttonY), (buttonX, buttonY+button), (buttonX+button/2,buttonY+button/2)], fill = 0)
+            drawred.polygon([(buttonX+button/2,buttonY), (buttonX+button/2, buttonY+button), (buttonX+button,buttonY+button/2)], fill = 0)        
+            
+            buttonY = 150
+            
+            drawred.polygon([(buttonX+button/2,buttonY), (buttonX+button/2, buttonY+button), (buttonX,buttonY+button/2)], fill = 0)
+            drawred.polygon([(buttonX+button,buttonY), (buttonX+button, buttonY+button), (buttonX+button/2,buttonY+button/2)], fill = 0)
+        else:
+            font = ImageFont.load_default()
+
+            fontRotate = ImageFont.truetype('/root/mopidyapi/Noir/NoirStd-Regular.ttf', 16)
+            # Text to be rotated...
+            rotate_text = u'back in Mopidy'
+
+            # Image for text to be rotated
+            img_txt = Image.new('1', fontRotate.getsize(rotate_text),255)
+            draw_txt = ImageDraw.Draw(img_txt)
+            draw_txt.text((0,0), rotate_text, font=fontRotate, fill=0)
+            t = img_txt.rotate(270, expand=1)
+            redimage1.paste(t,(3,28))
+            
+        ellipseRadius = 15
+        ellipseX = 225
+        ellipseY = 2
+        drawblack.ellipse((ellipseX,ellipseY,ellipseX+2*ellipseRadius,ellipseY+2*ellipseRadius),fill = 0)
+            
+        offsetLine = 5
+        line0 = 5
+        line1 = line0 + offsetLine
+        line2 = line1 + offsetLine
+        line3 = line2 + offsetLine
+        line4 = line3 + offsetLine
+        line5 = line4 + offsetLine
+        
+        randIndex = randrange(0,5)
+        
+        logoLines = [drawblack]*5
+        logoLinesFill = [1]*5
+        logoLines[randIndex] = drawred
+        logoLinesFill[randIndex] = 0
+        
+        lineX = 225
+        lineY = 25
+        
+        logoLines[0].line((line0+lineX,lineY-10,
+            line0+lineX,lineY), fill = logoLinesFill[0], width=3)
+            
+        logoLines[1].line((line1+lineX,lineY-15,
+            line1+lineX,lineY), fill = logoLinesFill[1], width=3)
+            
+        logoLines[2].line((line2+lineX,lineY-7,
+            line2+lineX,lineY), fill = logoLinesFill[2], width=3)
+            
+        logoLines[3].line((line3+lineX,lineY-13,
+            line3+lineX,lineY), fill = logoLinesFill[3], width=3)
+            
+        logoLines[4].line((line4+lineX,lineY-10,
+            line4+lineX,lineY), fill = logoLinesFill[4], width=3)
+            
+        startLineX = 27
+        startLineY = 148
+        lenght = 264-27-5
+        offset = 6
+        
+        if(spotifyConnect == True):
+            lenght = lenght - 40
+            
+        drawblack.line((startLineX,startLineY,startLineX+lenght,startLineY), fill = 0, width=2)   
+            
+        drawred.line((startLineX,startLineY+offset*1,startLineX+lenght,startLineY+offset*1),fill = 0, width=2)   
+            
+        drawblack.line((startLineX,startLineY+offset*2,startLineX+lenght,startLineY+offset*2),fill = 0, width=2)  
+        if(spotifyConnect == True):
+            lenght = lenght - 40
+        drawblack.line((startLineX,startLineY+offset*3,startLineX+lenght,startLineY+offset*3), fill = 0, width=2)     
             
             
         epd.display(epd.getbuffer(blackimage1), epd.getbuffer(redimage1))
