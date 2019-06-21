@@ -20,6 +20,7 @@ For the image processing part
 sudo pip3 install numpy
 sudo pip3 install scipy
 sudo pip3 install scikit-image
+sudo pip3 install cython
 sudo pip3 install scikit-learn
 ```
 

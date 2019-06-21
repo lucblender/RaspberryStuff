@@ -46,12 +46,10 @@ cargo build --release                                       //actual build
 
 ### Lauch Librespot with logs file
 ```
-./librespot -b 320 -v -c /tmp --name 'RaspberryPi MusicBox' >/root/mopidyapi/data/librespotOutput 2>&1
+./librespot -b 320 -v -c /tmp --name 'RaspberryPi MusicBox' >/home/pi/workspace/data/librespotOutput 2>&1
 ```
 When lauched as described and not as service, you can use mopidyTrackInfoPatch.py to also show music played with spotify connect.
 ## mopidyTrackInfoPatch.py
 
 This script can show the current track played on mopidy (pimusic box) and spotify connect (librespot). It will be displayed on a 5.3'' e-ink display.
 You'll have to use musicDisplay.py, epd5in83b.py and epdconfig.py from E-Ink\e-Paper\5.83inch_e-paper_b&c_code\*, and imageDivider.py from E-Ink\*
-
-**For now the mopidyapi library has a bug that doesn't let me use the pip version. Please install mopidyapi by cloning its git and change the line 84 in httpclient.py from  ```return deserialize_mopidy(r['result'])``` to ```return r```**
