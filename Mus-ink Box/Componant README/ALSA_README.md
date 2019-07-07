@@ -1,7 +1,5 @@
 # Audio Configuration
 
-https://www.pimusicbox.com
-
 ## Dependency 
 ### install alsaaudio for python
 ```
@@ -27,9 +25,6 @@ in /etc/modules add *snd-aloop*
 ```
 aplay -D "hw:Loopback" 01\ Somebody\ to\ Shove.wav
 ```
-
-
-
 
 ## Usefull audio command
 
@@ -69,17 +64,12 @@ set-default-source 4
 
 ## Vumeter
 
-The vumeter.py code will connect to the loopback_card, sample the audio and represent it on a vumeter made with neopixels. For more info about neopixels please check Neopixels folder to the root of this repository.
+The vumeter.py code will connect to the loopback_card, sample the audio and represent it on a vumeter made with neopixels. For more info about neopixels please check Neopixels readme.
 
 The fact that we created a mix card and put is as default mean our audio will always go on the physical card choosen and on the loopback card.
 
-### Source of vumeter.py 
+### Code used to create vumeter.py 
 https://github.com/andrebispo5/VumeterRasPi
 
-### Launch code
+https://julip.co/2012/05/arduino-python-soundlight-spectrum/
 
-Since we are using the board python module, we need to launch the code with root privilege. 
-
-```
-sudo python3 vumeter.py
-```

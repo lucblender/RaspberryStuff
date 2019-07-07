@@ -1,17 +1,18 @@
 # Raspberry Stuff
 
-This git has for purpose to mix describe many different work about Raspberry and the aditional hardware I used with it.
+This git has for purpose to describe many different work about Raspberry and the aditional hardware I used with it.
 
-You can find 4 folder:
-- Alsa
-    - Purpose to create a loopback audio card to capture audio and implement visualisation with vumeter for example
-- E-Ink
-    - Test with two e-ink display from waveshare
-    - Has image divider, can divide any picture into 3 channels (Red, Black, White)
-- LCD
-    - Use of the pitft capacitive touchscreen by adafruit
-- Neopixel
-    - Test of neopixels led by adafruit
-- PiMusicBox-mopidy-Librespot
-    - Mopidy and librespot configuration
-    - Use of E-ink to display actual music played on mopidy and librespot
+You can find 2 folders:
+
+## LCD
+- Use of the pitft capacitive touchscreen by adafruit
+## Mus-ink Box (A music box project featuring)
+- Audio configuration with alsa and pulse audio
+    - Purpose to create a loopback audio card to capture played audio 
+- Support of mopidy 
+- Support of librespot
+- E-Ink display 
+    - 5.83'' 2.7'' red and black from waveshare
+    - Show the actual music played on mopidy and librespot
+- Vumeter made with neopixels
+- Full system launch using systemctl service

@@ -28,4 +28,4 @@ sudo pip3 install scikit-learn
 
 The code imageDivider.py is used to divide an image in 3 channels to get compatible image for the 3 colours e-Paper (Red Black White). It will resize the image as desired and save them as black and red bitmap for the red and black channels.
 
-The e-Paper folder contain the code from the official waveshare git for the 2 e-Papers tested, with musicDisplay.py wich display data about a track played by its name, artist, album, lenght and album picture (generated with imageDivider) as parameters. The musicDisplay need the 'noir' font, not provided in this repo.
+MusicDisplay.py wich display data about a track played by its name, artist, album, lenght and album picture (generated with imageDivider) as parameters. The musicDisplay need the 'noir' font, not provided in this repo. The function musicDisplay is for the 5.83 inch e-Paper and the musicDisplaySmall is for the 2.7 inch e-Paper
