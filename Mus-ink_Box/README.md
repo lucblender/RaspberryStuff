@@ -68,6 +68,6 @@ https://github.com/gagle/raspberrypi-motd
 
 The screen example folder contain pictures that represent the e-ink display. Here are two examples out of the 6 availables:
 
-![2.7inch screen](https://github.com/lucblender/RaspberryStuff/blob/master/Mus-inkBox/ScreenExample/e-ink2.7Mopidy.png)
+![2.7inch screen](https://github.com/lucblender/RaspberryStuff/blob/master/Mus-ink_Box/ScreenExample/e-ink2.7Mopidy.png)
 
-![5.83 inches screen](https://github.com/lucblender/RaspberryStuff/blob/master/Mus-inkBox/ScreenExample/e-ink5.83Spotify.png)
+![5.83 inches screen](https://github.com/lucblender/RaspberryStuff/blob/master/Mus-ink_Box/ScreenExample/e-ink5.83Spotify.png)
