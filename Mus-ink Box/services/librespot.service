@@ -1,0 +1,19 @@
+Description=Librespot service
+After=network.target
+
+[Service]
+ExecStartPre=/bin/sleep 30
+ExecStart=/bin/sh -c "/usr/bin/sudo -u pi /home/pi/librespot/target/release/librespot -b 320 -v --name 'Mus-ink Box' >/home/pi/workspace/data/librespotOutput 2>&1"
+WorkingDirectory=/home/pi
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+Group=pi
+
+[Unit]
+StartLimitIntervalSec=20
+StartLimitBurst=20
+
+[Install]
+WantedBy=multi-user.target

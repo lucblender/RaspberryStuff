@@ -1,0 +1,19 @@
+Description=Pulse Audio
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/pulseaudio
+WorkingDirectory=/home/pi
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+Group=pi
+
+[Unit]
+StartLimitIntervalSec=20
+StartLimitBurst=20
+
+[Install]
+WantedBy=multi-user.target
+

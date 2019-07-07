@@ -1,0 +1,18 @@
+Description=Vumeter service
+After=network.target pulseAudio.service
+
+[Service]
+ExecStart=/usr/local/bin/python3.6 /home/pi/workspace/vumeter.py
+WorkingDirectory=/home/pi/workspace
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+
+[Unit]
+StartLimitIntervalSec=20
+StartLimitBurst=20
+
+[Install]
+WantedBy=multi-user.target
+

@@ -1,0 +1,18 @@
+Description=E-ink service
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/python3.6 /home/pi/mopidyapi/mopidyTrackInfo.py
+WorkingDirectory=/home/pi/mopidyapi
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+
+[Unit]
+StartLimitIntervalSec=20
+StartLimitBurst=20
+
+[Install]
+WantedBy=multi-user.target
+

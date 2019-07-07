@@ -20,7 +20,7 @@ from random import randrange
 # @return void
 # 
 #******************************************************************************
-def musicDisplay(artist = "Ghost", title = "Rats", album = "Prequelle", timeAudio = "4:22", albumBlack = 'albumOutBlack.bmp', albumRed = 'albumOutRed.bmp', spotifyConnect = True):
+def musicDisplay(artist = "", title = "", album = "", timeAudio = "", albumBlack = 'albumOutBlack.bmp', albumRed = 'albumOutRed.bmp', spotifyConnect = True, isWelcomeScreen = False):
 
     if len(artist) > 15:
         artist = artist[:15]+"..."    
@@ -54,17 +54,28 @@ def musicDisplay(artist = "Ghost", title = "Rats", album = "Prequelle", timeAudi
         drawblack = ImageDraw.Draw(blackimage1)
         drawred = ImageDraw.Draw(redimage1)
         
-        font25Medium = ImageFont.truetype('/root/mopidyapi/Noir/NoirStd-Medium.ttf', 25)
-        font25Regular = ImageFont.truetype('/root/mopidyapi/Noir/NoirStd-Regular.ttf', 25)
+        font25Medium = ImageFont.truetype('./Noir/NoirStd-Medium.ttf', 25)
+        font25Regular = ImageFont.truetype('./Noir/NoirStd-Regular.ttf', 25)
         
-        font15Medium = ImageFont.truetype('/root/mopidyapi/Noir/NoirStd-Medium.ttf', 19)
-        font15Regular = ImageFont.truetype('/root/mopidyapi/Noir/NoirStd-Regular.ttf', 19)
+        font15Medium = ImageFont.truetype('./Noir/NoirStd-Medium.ttf', 19)
+        font15Regular = ImageFont.truetype('./Noir/NoirStd-Regular.ttf', 19)
         drawblack.text((375, 50), artist, font = font25Medium, fill = 0)
         drawred.text((375, 85), "Title", font = font15Regular, fill = 0)
         drawblack.text((375, 110), title, font = font25Regular, fill = 0)
         drawred.text((375+27, 150), "Album", font = font15Regular, fill = 0)
         drawblack.text((375, 175), album, font = font25Regular, fill = 0)
         drawred.text((375, 215), timeAudio, font = font15Regular, fill = 0) 
+        
+        if isWelcomeScreen == True:        
+            drawred.text((375, 190), "Mopidy Server:", font = font15Regular, fill = 0)
+            drawblack.text((375, 215), "mus-inkbox:6680" , font = font25Regular, fill = 0)
+            
+            drawred.text((375, 265), "SpotifyConnect:", font = font15Regular, fill = 0)
+            drawblack.text((375, 290), "\"Mus-ink Box\"", font = font25Regular, fill = 0)
+            
+              
+            
+            
         
         if(spotifyConnect == True):
             drawblack.text((530, 27), "Connect", font = font15Regular, fill = 0)
@@ -144,15 +155,14 @@ def musicDisplay(artist = "Ghost", title = "Rats", album = "Prequelle", timeAudi
         drawblack.line((epd5in83b.EPD_WIDTH-15,epd5in83b.EPD_HEIGHT-60,
             epd5in83b.EPD_WIDTH/2+35,epd5in83b.EPD_HEIGHT-60), fill = 0, width=4)
             
-            
+
         epd.display(epd.getbuffer(blackimage1), epd.getbuffer(redimage1))
-        time.sleep(2)
        
     except:
         print('traceback.format_exc():\n%s',traceback.format_exc())
 
         
-def musicDisplaySmall(artist = "Ghost", title = "Rats", album = "Prequelle", timeAudio = "4:22", albumBlack = 'albumOutBlack.bmp', albumRed = 'albumOutRed.bmp', spotifyConnect = True):
+def musicDisplaySmall(artist = "", title = "", album = "", timeAudio = "", albumBlack = 'albumOutBlack.bmp', albumRed = 'albumOutRed.bmp', spotifyConnect = True, isWelcomeScreen = False):
 
     if len(artist) > 8:
         artist = artist[:8]+"..."    
@@ -184,11 +194,11 @@ def musicDisplaySmall(artist = "Ghost", title = "Rats", album = "Prequelle", tim
         drawblack = ImageDraw.Draw(blackimage1)
         drawred = ImageDraw.Draw(redimage1)
         
-        font25Medium = ImageFont.truetype('/root/mopidyapi/Noir/NoirStd-Medium.ttf', 19)
-        font25Regular = ImageFont.truetype('/root/mopidyapi/Noir/NoirStd-Regular.ttf', 16)
+        font25Medium = ImageFont.truetype('./Noir/NoirStd-Medium.ttf', 19)
+        font25Regular = ImageFont.truetype('./Noir/NoirStd-Regular.ttf', 16)
         
-        font15Medium = ImageFont.truetype('/root/mopidyapi/Noir/NoirStd-Medium.ttf', 15)
-        font15Regular = ImageFont.truetype('/root/mopidyapi/Noir/NoirStd-Regular.ttf', 15)
+        font15Medium = ImageFont.truetype('./Noir/NoirStd-Medium.ttf', 15)
+        font15Regular = ImageFont.truetype('./Noir/NoirStd-Regular.ttf', 15)
         textX = 170
         drawblack.text((textX, 35), artist, font = font25Medium, fill = 0)
         drawred.text((textX, 60), "Title", font = font15Medium, fill = 0)
@@ -237,7 +247,7 @@ def musicDisplaySmall(artist = "Ghost", title = "Rats", album = "Prequelle", tim
         else:
             font = ImageFont.load_default()
 
-            fontRotate = ImageFont.truetype('/root/mopidyapi/Noir/NoirStd-Regular.ttf', 16)
+            fontRotate = ImageFont.truetype('./Noir/NoirStd-Regular.ttf', 16)
             # Text to be rotated...
             rotate_text = u'back in Mopidy'
 
@@ -302,10 +312,8 @@ def musicDisplaySmall(artist = "Ghost", title = "Rats", album = "Prequelle", tim
         if(spotifyConnect == True):
             lenght = lenght - 40
         drawblack.line((startLineX,startLineY+offset*3,startLineX+lenght,startLineY+offset*3), fill = 0, width=2)     
-            
-            
+              
         epd.display(epd.getbuffer(blackimage1), epd.getbuffer(redimage1))
-        time.sleep(2)
        
     except:
         print('traceback.format_exc():\n%s',traceback.format_exc())

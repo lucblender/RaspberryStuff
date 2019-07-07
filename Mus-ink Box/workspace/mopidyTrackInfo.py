@@ -1,14 +1,13 @@
 from time import sleep
 from mopidyapi import MopidyAPI
 from imageDivider import divideFromSource
-#from musicDisplay import musicDisplaySmall as musicDisplay
-from musicDisplay import musicDisplay
 from track import Track
 import sys
 from threading import Lock, Semaphore
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import RPi.GPIO as GPIO 
+import configparser
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
@@ -18,9 +17,32 @@ PAUSE_BUTTON = 6
 NEXT_BUTTON = 13
 PREVIOUS_BUTTON = 19
 
+trackingConfigPath = "/home/pi/workspace/conf"
+trackingConfigFile = trackingConfigPath+"/"+"musinkConfig.conf"
+
+mopidyHost = "localhost"
+mopidyPort = 6680
+
+config = configparser.ConfigParser()
+config.read(trackingConfigFile)
+if config.has_option("e-ink","smallScreen"):
+    screenConfiguration = config["e-ink"].getboolean("smallScreen")
+    if screenConfiguration:
+        from musicDisplay import musicDisplaySmall as musicDisplay
+    else:
+        from musicDisplay import musicDisplay
+else:
+    from musicDisplay import musicDisplay
+
+if config.has_option("mopidy","host"):
+    mopidyHost = config["mopidy"]["host"]
+    
+if config.has_option("mopidy","port"):
+    mopidyPort = int(config["mopidy"]["port"])
+
 trackingPath = "/home/pi/workspace/data"
 trackingFile = trackingPath+"/"+"librespotOutput"
-m = MopidyAPI()
+m = MopidyAPI(host=mopidyHost, port=mopidyPort)
 currentTrack = Track("Uninitialized","Uninitialized","Uninitialized","Uninitialized","Uninitialized")
 
 artistMutex = Lock()
@@ -57,10 +79,10 @@ def trackChanged(event):
     global currentTrack
     sleep(1)    
     resultTrack = m.playback.get_current_track()  
-    retry = 2
+    retry = 5
     while resultTrack == None and retry != 0: 
+        sleep(2)        
         print("retry")
-        sleep(1)        
         resultTrack = m.playback.get_current_track() 
         retry = retry - 1
         
@@ -84,6 +106,7 @@ def trackChanged(event):
 class MyHandler(FileSystemEventHandler):
     def on_modified(self, event):
         global currentTrack
+        playerLine = None
         if event.src_path == trackingFile:
             fileHandle = open ( trackingFile,"r" , encoding='utf-8') 
             lineList = fileHandle.readlines()
@@ -94,6 +117,7 @@ class MyHandler(FileSystemEventHandler):
                 i = -1
                 while(foundTrack == False and i > (-len(lineList)-1)):
                     if lineList[i].find("INFO  librespot_playback::player] Loading track ")!=-1:
+                        playerLine = lineList[i]
                         trackURI = lineList[i].split("with Spotify URI ")[-1]\
                                     .replace('"','')\
                                     .replace('\n','')    
@@ -116,6 +140,13 @@ class MyHandler(FileSystemEventHandler):
                                 
                         foundTrack = True
                     i-=1
+                if len(lineList) > 500 and playerLine != None:
+                    fileHandle = open ( trackingFile,"w+" , encoding='utf-8') 
+                    fileHandle.write(playerLine+"\n")
+                    fileHandle.seek(0)
+                    fileHandle.close()
+                                        
+                print(playerLine)
  
 GPIO.setup(PLAY_BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_UP) 
 GPIO.setup(PAUSE_BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_UP) 
@@ -139,7 +170,7 @@ if resultTrack != None:
         displayMutex.release()
         displaySemaphore.release()
 else:
-    musicDisplay(artist = "Welcome!",title = "",album = "",timeAudio = "", albumBlack = 'lbBlack.bmp',albumRed = 'lbRed.bmp', spotifyConnect = False)   
+    musicDisplay(artist = "Welcome!", albumBlack = 'lbBlack.bmp',albumRed = 'lbRed.bmp', spotifyConnect = False, isWelcomeScreen = True)   
                                 
 path = trackingPath
 event_handler = MyHandler()

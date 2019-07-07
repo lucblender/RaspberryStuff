@@ -1,0 +1,17 @@
+Description=Custom mopidy service
+After=network.target librespot.service
+
+[Service]
+ExecStart=/usr/bin/mopidy 
+WorkingDirectory=/home/pi
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Unit]
+StartLimitIntervalSec=20
+StartLimitBurst=20
+
+[Install]
+WantedBy=multi-user.target
