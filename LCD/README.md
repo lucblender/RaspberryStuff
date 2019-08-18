@@ -37,7 +37,7 @@ sudo apt-get install xserver-xorg-video-dummy
 x11vnc -storepasswd "mypassword" ~/.vnc_passwd
 ``` 
 
-Create Xorg configuration file in ``` /usr/share/X11/xorg.conf.d/xorg.conf/xorg.conf```:
+Create Xorg configuration file in ``` /usr/share/X11/xorg.conf.d/xorg.conf```:
 ```
 Section "Device"
     Identifier  "Configured Video Device"
