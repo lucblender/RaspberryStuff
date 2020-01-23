@@ -82,14 +82,16 @@ When your Zwave.me things are added, you can link their channel to item, this st
 
 ### Use openhab thing with Google Home
 
-To use openhab with Google Home we will pass by the openHAB cloud called my openHAB. You'll have to add the addon called **_openHAB Cloud Connector_** ([documenation](https://www.openhab.org/addons/integrations/openhabcloud/)). When the addon is installed, you can connect on https://myopenhab.org, create an account and fill two parameters :
+To use openhab with Google Home we will pass by the openHAB cloud called my openHAB. You'll have to add the addon called **_openHAB Cloud Connector_** ([documentation](https://www.openhab.org/addons/integrations/openhabcloud/)). When the addon is installed, you can connect on https://myopenhab.org, create an account and fill two parameters :
 - UUID	found in: /var/lib/openhab2/uuid
 - Secret	found in: /var/lib/openhab2/openhabcloud/secret
 
-Now you'll have to make the item you want accessible by the openhab cloud ([documentation](https://www.mksmarthouse.com/google-home)). To do so we need to modify the /etc/openhab2/items/home.items file. As example, here is my configuration:
+Now you'll have to make the item you want accessible by the openhab cloud ([documentation](https://www.openhab.org/docs/ecosystem/google-assistant/)). To do so we need to modify the /etc/openhab2/items/home.items file. As example, here is my configuration:
 ```
-Switch FoxxProjectSmartSwitchGen5Aeotec_AeotecSwitch4 "Fan" <switch> [ "Switchable" ]
-Number Philio2In1SensorTemperatureAndHumidityPhilioTechnologyCorp_PhilioTechnologyCorpTemperature5 "Bedroom Temperature" [ "CurrentTemperature" ] 
+Switch FoxxSwitch "Fan" <switch> { ga="Switch" }
+
+Group g_bedroom_temperature "Bedroom Thermostat" { ga="Thermostat"}
+Number Philio2Temperature4 "Bedroom Temperature" (g_bedroom_temperature) { ga="thermostatTemperatureAmbient" }
 ```
 This configuration use two item, one who is a Zwave plug switch and the other one a Zwave temperature sensor. 
 Then on the google home app, you'll need to add your myOpenhab account. When it's done, you'll see automatically the new things appearing when you setup a new device.
