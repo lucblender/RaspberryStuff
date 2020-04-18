@@ -2,7 +2,7 @@
 
 This git has for purpose to describe many different work about Raspberry and the aditional hardware I used with it.
 
-You can find 3 folders:
+You can find 5 folders:
 
 ## LCD
 - Use of the pitft capacitive touchscreen by adafruit
@@ -24,3 +24,14 @@ Home automation system for Raspberry Pi using:
     - For devices binding and use with GoogleHome
 - InfluxDb (using docker) and Grafana
     - Persistence and visualisation of data
+		
+## Adaftuit DotStar Matrix Python Driver
+
+Python driver for dotstar led matrix use for:
+- Display a picture
+- Display a scrolling text
+- Display a movie
+ 
+## AdcArduinoMicro
+
+Use of an Arduino Micro as ADC hat for Raspberry Pi
