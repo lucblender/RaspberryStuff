@@ -17,8 +17,8 @@ For the dependency, please refer to the "Componant README" folder. Since this sy
 A configuation file can be found in ./workspace/conf/musinkConfig.conf
 
 Here is the available configuration, it is useful to change the vumeter style (change are dynamic), the size of the e-ink display and the mopidy server in use.
-
-´´´ 
+ 
+```
 #Parameters for the vumeter
 #To note that the vumeter configuration is dynamic and will affect immediatly the leds
 [vumeter]
@@ -37,7 +37,7 @@ smallScreen=True
 [mopidy]
 host=localhost
 port=6680
-´´´
+```
 
 ## Services
 
