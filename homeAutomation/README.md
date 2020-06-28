@@ -9,6 +9,7 @@ The different componant are:
     - For devices binding and use with GoogleHome
 - InfluxDb (using docker) and Grafana
     - Persistence and visualisation of data
+- An octoprint server because I'm sure you also have a 3d printer
 
 ##  Prerequisites
 
@@ -88,10 +89,11 @@ To use openhab with Google Home we will pass by the openHAB cloud called my open
 
 Now you'll have to make the item you want accessible by the openhab cloud ([documentation](https://www.openhab.org/docs/ecosystem/google-assistant/)). To do so we need to modify the /etc/openhab2/items/home.items file. As example, here is my configuration:
 ```
-Switch FoxxSwitch "Fan" <switch> { ga="Switch" }
-
+Switch FoxxSwitch "3D Printer" <switch> { ga="Switch" }
 Group g_bedroom_temperature "Bedroom Thermostat" { ga="Thermostat"}
-Number Philio2Temperature4 "Bedroom Temperature" (g_bedroom_temperature) { ga="thermostatTemperatureAmbient" }
+Number Philio2BedroomTemperature "Bedroom Temperature" (g_bedroom_temperature) { ga="thermostatTemperatureAmbient" }
+Group g_outside_temperature "Outside Thermostat" { ga="Thermostat"}
+Number Philio2OutsideTemperature "Bedroom Temperature" (g_outside_temperature) { ga="thermostatTemperatureAmbient" }
 ```
 This configuration use two item, one who is a Zwave plug switch and the other one a Zwave temperature sensor. 
 Then on the google home app, you'll need to add your myOpenhab account. When it's done, you'll see automatically the new things appearing when you setup a new device.
@@ -133,8 +135,28 @@ Strategies {
 }
 
 Items {
-    Philio2In1SensorTemperatureAndHumidityPhilioTechnologyCorp_PhilioTechnologyCorpTemperature5, Philio2In1SensorTemperatureAndHumidityPhilioTechnologyCorp_PhilioTechnologyCorpHumidity5, Philio2In1SensorTemperatureAndHumidityPhilioTechnologyCorp_PhilioTechnologyCorpBattery5, FoxxProjectSmartSwitchGen5Aeotec_AeotecSwitch4, AeotecElectricMeter6_Energy, AeotecElectricMeter6_Current, AeotecElectricMeter6_Power, AeotecElectricMeter6_Voltage   : strategy = everyChange, everyMinute
+    Philio2BedroomTemperature, Philio2BedroomHumidity, Philio2BedroomBattery, Philio2OutsideTemperature, Philio2OutsideHumidity, Philio2OutsideBattery, FoxxSwitch, FoxxPower, FoxxAmp, FoxxVolt, FoxxEnergy : strategy = everyChange, everyHour
 }
 ```
 
 With that, the item described in the influxdb.persist file will be saved in influx and so available in grafana.
+
+### Octoprint
+
+We will install octoprint on python3 like so:
+
+```
+sudo apt-get install python3-pip
+pip3 install octoprint
+```
+Octoprint can then be simply launched by doing:
+```
+```
+
+But I prefer launching it with systemctl, look at the octoprint.service file. You can launch it like so:
+
+
+```
+sudo systemctl enable octoprint.service
+sudo systemctl start octoprint.service
+```

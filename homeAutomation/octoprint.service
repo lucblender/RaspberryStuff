@@ -1,0 +1,17 @@
+Description=Octoprint Server
+After=network.target
+
+[Service]
+ExecStart=/home/pi/.local/bin/octoprint serve
+WorkingDirectory=/home/pi
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Unit]
+StartLimitIntervalSec=20
+StartLimitBurst=20
+
+[Install]
+WantedBy=multi-user.target
